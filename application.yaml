@@ -1,0 +1,61 @@
+server:
+  shutdown: graceful
+  port: 10001
+spring:
+  messages:
+    fallback-to-system-locale: false
+    basename: i18n/messages
+  cache:
+    type: simple
+  profiles:
+    active: dev
+  codec:
+    max-in-memory-size: 2MB
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT
+
+mybatis-flex:
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: false
+
+# 日志配置
+logging:
+  config: classpath:logback-wallet.xml
+  level:
+    root: INFO
+    org.springframework.boot.autoconfigure.logging: INFO
+  file:
+    max-history: 3
+    max-size: 500MB
+    path: log
+
+management:
+  endpoint:
+    health:
+      show-details: always
+      probes:
+        enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  metrics:
+    distribution:
+      percentiles:
+        http:
+          server:
+            requests: 0.5,0.90,0.95,0.99
+          client:
+            requests: 0.5,0.90,0.95,0.99
+      percentiles-histogram:
+        http:
+          server:
+            requests: true
+          client:
+            requests: true
+  prometheus:
+    metrics:
+      export:
+        enabled: true
